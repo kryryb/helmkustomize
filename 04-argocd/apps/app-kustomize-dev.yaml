@@ -3,7 +3,7 @@
 # Wskazuje na: 02-kustomize/overlays/dev
 # ArgoCD renderuje Kustomize automatycznie (wykrywa kustomization.yaml)
 #
-# PRZED UŻYCIEM: zamień <TWOJ_GITHUB_URL> na URL swojego repo
+# PRZED UŻYCIEM: zamień https://github.com/kryryb/helmkustomize.git na URL swojego repo
 # Przykład: https://github.com/jan-kowalski/helmkustomize.git
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -17,7 +17,7 @@ spec:
   project: default
 
   source:
-    repoURL: <TWOJ_GITHUB_URL>
+    repoURL: https://github.com/kryryb/helmkustomize.git
     # Śledź gałąź main (lub zmień na konkretny tag/commit)
     targetRevision: HEAD
     # Ścieżka w repo do Kustomize overlay
