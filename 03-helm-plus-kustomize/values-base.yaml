@@ -1,0 +1,31 @@
+# values-base.yaml — wartości bazowe dla Helm chart używanego przez Kustomize
+# Kustomize renderuje chart z tymi wartościami, a następnie nakłada patche
+
+replicaCount: 1
+
+image:
+  repository: nginx
+  tag: "1.27.0"
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 80
+
+resources:
+  requests:
+    cpu: 50m
+    memory: 64Mi
+  limits:
+    cpu: 100m
+    memory: 128Mi
+
+content: |
+  <!DOCTYPE html>
+  <html>
+  <head><title>Moja Aplikacja</title></head>
+  <body>
+    <h1>Witaj!</h1>
+    <p>Renderowane przez Helm, customizowane przez Kustomize.</p>
+  </body>
+  </html>

@@ -1,0 +1,36 @@
+# ArgoCD Application — Kustomize overlay PROD
+#
+# Wskazuje na: 02-kustomize/overlays/prod
+#
+# Różnica względem dev:
+# - BRAK automated.prune i selfHeal — prod wymaga ręcznej synchronizacji
+# - To jest świadoma decyzja: na produkcji nie chcemy automatycznych zmian
+#   bez ludzkiej weryfikacji (szczególnie prune który usuwa zasoby!)
+#
+# PRZED UŻYCIEM: zamień <TWOJ_GITHUB_URL> na URL swojego repo
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: myapp-kustomize-prod
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+
+  source:
+    repoURL: <TWOJ_GITHUB_URL>
+    targetRevision: HEAD
+    path: 02-kustomize/overlays/prod
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: myapp-prod
+
+  syncPolicy:
+    # automated: brak — sync tylko ręcznie przez:
+    #   argocd app sync myapp-kustomize-prod
+    #   lub przycisk "Sync" w UI
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true

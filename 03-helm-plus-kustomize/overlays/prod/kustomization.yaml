@@ -1,0 +1,21 @@
+# Overlay PROD używający Helm chart jako źródła
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+helmCharts:
+  - name: myapp
+    releaseName: myapp-prod
+    namespace: myapp-prod
+    chartPath: ../../../01-helm/myapp
+    valuesFile: ../../values-base.yaml
+
+namespace: myapp-prod
+
+commonLabels:
+  environment: prod
+
+patches:
+  - path: patches/deployment-patch.yaml
+    target:
+      kind: Deployment
+      name: myapp-prod

@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: myapp-html
+data:
+  index.html: |
+    <!DOCTYPE html>
+    <html>
+    <head><title>Moja Aplikacja</title></head>
+    <body>
+      <h1>Witaj z Kustomize!</h1>
+      <p>To jest bazowa konfiguracja.</p>
+    </body>
+    </html>

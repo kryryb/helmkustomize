@@ -1,0 +1,23 @@
+# values-prod.yaml — nadpisania dla środowiska PROD
+# Użycie: helm install myapp ./myapp -f values-prod.yaml
+
+replicaCount: 3
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 200m
+    memory: 256Mi
+
+content: |
+  <!DOCTYPE html>
+  <html>
+  <head><title>Moja Aplikacja</title></head>
+  <body style="background-color: #d4edda;">
+    <h1>Witaj!</h1>
+    <p>Środowisko: <strong style="color: green;">PROD</strong></p>
+    <p>Repliki: 3 | Zasoby: produkcyjne</p>
+  </body>
+  </html>

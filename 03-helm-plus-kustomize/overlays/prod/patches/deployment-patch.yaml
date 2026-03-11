@@ -1,0 +1,33 @@
+# Patch produkcyjny nakładany na wynik helm template
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myapp-prod
+  namespace: myapp-prod
+spec:
+  replicas: 3
+  template:
+    metadata:
+      annotations:
+        environment: "prod"
+        managed-by: "kustomize+helm"
+    spec:
+      # Anti-affinity — nie jest w values.yaml chartu, ale Kustomize może to dodać!
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/name: myapp
+                topologyKey: kubernetes.io/hostname
+      containers:
+        - name: nginx
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 200m
+              memory: 256Mi

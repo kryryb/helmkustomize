@@ -1,0 +1,41 @@
+# ArgoCD Application — Kustomize overlay DEV
+#
+# Wskazuje na: 02-kustomize/overlays/dev
+# ArgoCD renderuje Kustomize automatycznie (wykrywa kustomization.yaml)
+#
+# PRZED UŻYCIEM: zamień <TWOJ_GITHUB_URL> na URL swojego repo
+# Przykład: https://github.com/jan-kowalski/helmkustomize.git
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: myapp-kustomize-dev
+  namespace: argocd
+  # Finalizer zapewnia że ArgoCD usunie zasoby przy kasowaniu Application
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+
+  source:
+    repoURL: <TWOJ_GITHUB_URL>
+    # Śledź gałąź main (lub zmień na konkretny tag/commit)
+    targetRevision: HEAD
+    # Ścieżka w repo do Kustomize overlay
+    path: 02-kustomize/overlays/dev
+
+  destination:
+    # Deployuj do lokalnego klastra (minikube)
+    server: https://kubernetes.default.svc
+    namespace: myapp-dev
+
+  syncPolicy:
+    automated:
+      # Usuń zasoby z klastra gdy znikną z Git
+      prune: true
+      # Przywróć stan z Git jeśli ktoś ręcznie zmienił klaster (drift)
+      selfHeal: true
+    syncOptions:
+      # Utwórz namespace jeśli nie istnieje
+      - CreateNamespace=true
+      # Użyj server-side apply (lepiej obsługuje CRD)
+      - ServerSideApply=true

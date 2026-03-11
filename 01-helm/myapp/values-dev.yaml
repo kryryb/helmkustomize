@@ -1,0 +1,24 @@
+# values-dev.yaml — nadpisania dla środowiska DEV
+# Użycie: helm install myapp ./myapp -f values-dev.yaml
+# Tylko zmienione wartości — reszta pochodzi z values.yaml
+
+replicaCount: 1
+
+resources:
+  requests:
+    cpu: 25m
+    memory: 32Mi
+  limits:
+    cpu: 50m
+    memory: 64Mi
+
+content: |
+  <!DOCTYPE html>
+  <html>
+  <head><title>Moja Aplikacja — DEV</title></head>
+  <body style="background-color: #fff3cd;">
+    <h1>Witaj z Helm!</h1>
+    <p>Środowisko: <strong style="color: orange;">DEV</strong></p>
+    <p>Repliki: 1 | Zasoby: minimalne</p>
+  </body>
+  </html>

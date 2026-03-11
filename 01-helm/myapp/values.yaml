@@ -1,0 +1,38 @@
+# values.yaml — domyślne wartości chartu
+# To jest "publiczne API" chartu — twórca chartu decyduje co można konfigurować.
+# Użytkownik może nadpisać dowolną wartość przez: helm install -f moje-values.yaml
+
+# Liczba replik aplikacji
+replicaCount: 1
+
+# Konfiguracja obrazu Docker
+image:
+  repository: nginx
+  tag: "1.27.0"
+  pullPolicy: IfNotPresent
+
+# Konfiguracja serwisu Kubernetes
+service:
+  type: ClusterIP
+  port: 80
+
+# Zasoby CPU i pamięci
+resources:
+  requests:
+    cpu: 50m
+    memory: 64Mi
+  limits:
+    cpu: 100m
+    memory: 128Mi
+
+# Treść strony HTML serwowanej przez nginx
+content: |
+  <!DOCTYPE html>
+  <html>
+  <head><title>Moja Aplikacja</title></head>
+  <body>
+    <h1>Witaj z Helm!</h1>
+    <p>Środowisko: <strong>domyślne</strong></p>
+    <p>To jest domyślna treść z values.yaml chartu.</p>
+  </body>
+  </html>

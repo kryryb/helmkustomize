@@ -1,0 +1,50 @@
+# ArgoCD Application — Helm chart
+#
+# Wskazuje na: 01-helm/myapp (lokalny chart w repo)
+# ArgoCD renderuje chart przez helm template automatycznie
+#
+# Porównaj z app-kustomize-dev.yaml:
+# - Sekcja `helm:` w source zamiast braku parametrów (Kustomize wykrywane automatycznie)
+# - ArgoCD używa helm template (nie helm install) — brak Helm release history!
+#   Rollback odbywa się przez Git, nie przez helm rollback
+#
+# PRZED UŻYCIEM: zamień <TWOJ_GITHUB_URL> na URL swojego repo
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: myapp-helm
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+
+  source:
+    repoURL: <TWOJ_GITHUB_URL>
+    targetRevision: HEAD
+    # Ścieżka do katalogu z Chart.yaml
+    path: 01-helm/myapp
+    # Konfiguracja Helm (ArgoCD renderuje chart)
+    helm:
+      # Użyj pliku values-dev.yaml z tego samego katalogu
+      valueFiles:
+        - values-dev.yaml
+      # Możesz też nadpisywać wartości bezpośrednio tutaj:
+      # values: |
+      #   replicaCount: 2
+      #   resources:
+      #     requests:
+      #       cpu: 50m
+
+  destination:
+    server: https://kubernetes.default.svc
+    # Osobny namespace — nie koliduje z deploy z modułu 1
+    namespace: myapp-helm-argocd
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true

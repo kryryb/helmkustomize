@@ -1,0 +1,18 @@
+apiVersion: v2
+name: myapp
+description: Prosta aplikacja nginx do nauki Helm i Kustomize
+type: application
+
+# Wersja chartu (zmieniaj przy każdej modyfikacji szablonów/struktury)
+version: 1.0.0
+
+# Wersja aplikacji (obraz Docker który deployujesz)
+appVersion: "1.27.0"
+
+keywords:
+  - nginx
+  - demo
+  - helm-kustomize-kurs
+
+maintainers:
+  - name: Kurs Helm+Kustomize

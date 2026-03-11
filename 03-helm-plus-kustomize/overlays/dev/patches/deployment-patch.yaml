@@ -1,0 +1,25 @@
+# Ten patch jest nakładany NA wynik helm template
+# Możemy zmienić pola których chart nie eksponuje przez values.yaml!
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myapp-dev
+  namespace: myapp-dev
+spec:
+  replicas: 1
+  template:
+    metadata:
+      # Dodajemy annotację — chart tego nie eksponuje, ale Kustomize może to zrobić
+      annotations:
+        environment: "dev"
+        managed-by: "kustomize+helm"
+    spec:
+      containers:
+        - name: nginx
+          resources:
+            requests:
+              cpu: 25m
+              memory: 32Mi
+            limits:
+              cpu: 50m
+              memory: 64Mi

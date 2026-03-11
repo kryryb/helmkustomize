@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "myapp.fullname" . }}-html
+  labels:
+    {{- include "myapp.labels" . | nindent 4 }}
+data:
+  # Treść strony pochodzi z .Values.content
+  # Możesz ją nadpisać przez: helm install myapp ./myapp --set content="<h1>Nowa treść</h1>"
+  index.html: |
+    {{- .Values.content | nindent 4 }}

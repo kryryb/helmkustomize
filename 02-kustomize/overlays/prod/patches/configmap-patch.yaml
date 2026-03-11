@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: myapp-html
+data:
+  index.html: |
+    <!DOCTYPE html>
+    <html>
+    <head><title>Moja Aplikacja</title></head>
+    <body style="background-color: #d4edda;">
+      <h1>Witaj!</h1>
+      <p>ŚRODOWISKO: <strong style="color: green;">PROD</strong></p>
+      <p>Repliki: 3 | Zasoby: produkcyjne | Anti-affinity: włączone</p>
+    </body>
+    </html>

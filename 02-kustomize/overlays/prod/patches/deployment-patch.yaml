@@ -1,0 +1,29 @@
+# Patch produkcyjny — więcej replik, więcej zasobów, anti-affinity
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myapp
+spec:
+  replicas: 3
+  template:
+    spec:
+      # Anti-affinity — pody rozkładają się na różne węzły
+      # Zabezpiecza przed utratą wszystkich replik przy awarii węzła
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app: myapp
+                topologyKey: kubernetes.io/hostname
+      containers:
+        - name: nginx
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 200m
+              memory: 256Mi

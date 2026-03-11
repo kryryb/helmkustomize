@@ -1,0 +1,20 @@
+# Strategic Merge Patch — nadpisuje tylko wskazane pola
+# Kustomize "scala" ten plik z bazowym Deployment
+# Pola które tu są → nadpisane; pola których tu nie ma → bez zmian
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myapp
+spec:
+  replicas: 1
+  template:
+    spec:
+      containers:
+        - name: nginx
+          resources:
+            requests:
+              cpu: 25m
+              memory: 32Mi
+            limits:
+              cpu: 50m
+              memory: 64Mi

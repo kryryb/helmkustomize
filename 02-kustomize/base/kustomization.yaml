@@ -1,0 +1,10 @@
+# kustomization.yaml — lista zasobów zarządzanych przez Kustomize
+# Ten plik mówi Kustomize: "zarządzaj tymi plikami YAML"
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+# Lista zasobów bazowych
+resources:
+  - deployment.yaml
+  - service.yaml
+  - configmap.yaml

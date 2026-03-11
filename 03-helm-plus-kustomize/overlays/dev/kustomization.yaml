@@ -1,0 +1,27 @@
+# Overlay DEV używający Helm chart jako źródła
+# Kustomize renderuje chart (helm template wewnętrznie) i nakłada patche
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+# Użyj lokalnego Helm chart jako źródła bazowych manifestów
+# Kustomize wywoła: helm template myapp-dev ../../01-helm/myapp --values ../../03-helm-plus-kustomize/values-base.yaml
+helmCharts:
+  - name: myapp
+    releaseName: myapp-dev
+    namespace: myapp-dev
+    # Ścieżka do lokalnego chartu (relatywnie do tego pliku)
+    chartPath: ../../../01-helm/myapp
+    valuesFile: ../../values-base.yaml
+
+namespace: myapp-dev
+
+commonLabels:
+  environment: dev
+
+# Patche nakładane NA WYNIK renderowania Helm chart
+# Tu możemy zmienić COKOLWIEK — nawet pola których chart nie eksponuje przez values
+patches:
+  - path: patches/deployment-patch.yaml
+    target:
+      kind: Deployment
+      name: myapp-dev

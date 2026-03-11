@@ -1,0 +1,27 @@
+# Overlay DEV — customizacja dla środowiska deweloperskiego
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+# Wskazuje na base — wszystkie zasoby z base zostaną użyte
+resources:
+  - ../../base
+
+# Namespace — wszystkie zasoby dostaną ten namespace
+namespace: myapp-dev
+
+# Wspólna etykieta dodawana do wszystkich zasobów
+commonLabels:
+  environment: dev
+
+# Patche — modyfikacje nakładane na zasoby z base
+patches:
+  # Zmiana liczby replik i zasobów w Deployment
+  - path: patches/deployment-patch.yaml
+    target:
+      kind: Deployment
+      name: myapp
+  # Zmiana treści strony w ConfigMap
+  - path: patches/configmap-patch.yaml
+    target:
+      kind: ConfigMap
+      name: myapp-html
